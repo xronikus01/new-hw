@@ -18,7 +18,7 @@ func main() {
 	}
 	defer db.Close()
 
-	repo := sqlite.New(db)
+	repo := sqlite.NewSQLiteRepo(db)
 
 	// отдельная ответственность: инициализация хранилища (таблица)
 	if err := repo.Init(); err != nil {

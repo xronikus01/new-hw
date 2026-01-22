@@ -8,16 +8,16 @@ import (
 	"example/solid/internal/order"
 )
 
-type Repo struct {
+type SQLiteRepo struct {
 	db *sql.DB
 }
 
-func New(db *sql.DB) *Repo {
-	return &Repo{db: db}
+func NewSQLiteRepo(db *sql.DB) *SQLiteRepo {
+	return &SQLiteRepo{db: db}
 }
 
 // Init реализует order.RepositoryInitializer
-func (r *Repo) Init() error {
+func (r *SQLiteRepo) Init() error {
 	_, err := r.db.Exec(`
 CREATE TABLE IF NOT EXISTS orders (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS orders (
 }
 
 // Save реализует order.RepositoryWriter
-func (r *Repo) Save(o order.Order) error {
+func (r *SQLiteRepo) Save(o order.Order) error {
 	products := strings.Join(o.Products, ",")
 	_, err := r.db.Exec(
 		"INSERT INTO orders (customer, products, total, status) VALUES (?, ?, ?, ?)",
